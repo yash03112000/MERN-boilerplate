@@ -44,8 +44,7 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// API routes
-require('./routes')(app);
+
 
 if (isDev) {
   const compiler = webpack(webpackConfig);
