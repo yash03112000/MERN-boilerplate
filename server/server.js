@@ -17,9 +17,28 @@ const port  = process.env.PORT || 8080;
 // Configuration
 // ================================================================================================
 
-// Set up Mongoose
-mongoose.connect(isDev ? config.db_dev : config.db);
-mongoose.Promise = global.Promise;
+
+
+
+const connectDB = async () => {
+  try {
+    const conn = await mongoose.connect(isDev ? config.db_dev : process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useFindAndModify: false,
+    })
+
+    mongoose.Promise = global.Promise;
+
+
+    console.log(`MongoDB Connected: ${conn.connection.host}`)
+  } catch (err) {
+    console.error(err)
+    process.exit(1)
+  }
+}
+
+connectDB();
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
